@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Form Input</h2>
+
+<form action="input.php" onsubmit="return validateForm()" method="post">
+    <label for="prov">Provinsi:</label><br>
+    <input type="text" id="prov" name="provinsi" value=""><br>
+
+    <label for="long">Longitude:</label><br>
+    <input type="text" id="long" name="longitude" value=""><br>
+
+    <label for="lat">Latitude:</label><br>
+    <input type="text" id="lat" name="latitude" value=""><br>
+
+    <label for="jml">Jumlah Koperasi:</label><br>
+    <input type="text" id="jml" name="jumlah_koperasi" value=""><br>
+
+    <label for="tgl">Tanggal Data:</label><br>
+    <input type="date" id="tgl" name="tanggal_data"><br><br>
+
+    <input type="submit" value="Submit">
+    <a href="../index.php">Batal</a>
+</form>
+
+<p id="informasi" style="color:red"></p>
+
+<script>
+// isi tanggal default = hari ini
+document.getElementById("tgl").value = new Date().toISOString().slice(0, 10);
+
+function validateForm() {
+    let prov = document.getElementById("prov").value.trim();
+    let lng  = document.getElementById("long").value.trim().replace(",", ".");
+    let lat  = document.getElementById("lat").value.trim().replace(",", ".");
+    let jml  = document.getElementById("jml").value.trim();
+    let tgl  = document.getElementById("tgl").value;
+    let text = "";
+
+    if (prov === "") {
+        text = "Provinsi tidak boleh kosong.";
+    } else if (lng === "" || isNaN(lng) || lng < -180 || lng > 180) {
+        text = "Longitude harus angka antara -180 sampai 180.";
+    } else if (lat === "" || isNaN(lat) || lat < -90 || lat > 90) {
+        text = "Latitude harus angka antara -90 sampai 90.";
+    } else if (!/^\d+$/.test(jml)) {
+        text = "Jumlah koperasi harus berupa angka bulat dan tidak boleh negatif.";
+    } else if (tgl === "") {
+        text = "Tanggal data harus diisi.";
+    }
+
+    document.getElementById("informasi").innerHTML = text;
+    return text === "";   // false = form tidak dikirim
+}
+</script>
+
+</body>
+</html>
